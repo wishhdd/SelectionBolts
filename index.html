@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="rus">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <h1 align="center">Подбор длины болта в зависимости от толщины стягиваемого пакета</h1>
+    <h2 align="center"> ГОСТ болта:
+        <select id="gostID" onchange="boltGOSTSelection();"></select>
+        , диаметр:
+    <select id="boltID" onchange="boltSelectionButtonclick();"></select>
+    , класс прчности:
+    <select id="strengthClassID">
+        <option>5.6</option>
+        <option>8.8</option>
+        <option>10.9</option>
+        <option>12.9</option>
+    </select>
+    , колличество гаек:
+    <select id="nutID" onchange="boltSelectionButtonclick();">
+        <option>1</option>
+        <option>2</option>
+    </select>
+    , толщина пакета:
+    <input id="packageID" maxlength = "3" min = "0" size = "3" type ="number" oninput ="boltSelectionButtonclick();" value="0"></input>
+
+        <button id="boltSelectionButtonID" onClick="boltSelectionButtonclick();">Подобрать</button>
+    </h2>
+    <h4 align="center">
+        <textarea id="matchedBoltID" style="width:90%" readonly></textarea>
+    </h4>
+    <h3 align="center">
+        <button id="boltSelectionButtonAddID" onClick="boltSelectionButtonAddTable();">Добавить в ведомость</button>
+    </h3>
+    <table align="center" cols=11 style="width:90%" border = 1 id="tableHardwareID">
+        <tr>
+            <td align="center" colspan="8">Ведомость метизов</td>
+        </tr>
+        <tr>
+            <td align="center">Наименование и диаметр</td>
+            <td align="center">Толщина пакета, мм</td>
+            <td align="center">Длина, мм</td>
+            <td align="center">Кол-во, шт</td>
+            <td align="center">Вес, кг</td>
+            <td align="center">ГОСТ</td>
+            <td align="center">Класс прочности</td>
+            <td align="center">Примечание</td>
+        </tr>
+
+    </table>
+    <h3 align="center">
+        <button id="boltsTableExportExcelID" onClick="boltsTableExport();" style="display:none">Экспортировать в</button>
+        <select id="progExportID" style="display:none">
+            <option>Excel</option>
+            <option>Calc</option>
+        </select>
+    </h3>
+
+    <script src="hardware.js"></script>
+    <script src = "bolt.js"></script>
+
+</body>
+</html>
