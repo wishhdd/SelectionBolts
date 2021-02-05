@@ -1,17 +1,21 @@
+
 let lastBoltSelection;
 
 function boltSelection(diameter, package, numberOfNuts, gost) {
     let ourBolt;
     let ourBolts;
+    let ourBoltGOST;
     let ourBoltGOSTname;
     for (let key in bolt){
         if (bolt[key].gost === gost){
             ourBolts = bolt[key][diameter];
             ourBoltGOSTname = bolt[key].nameGOST;
+            ourBoltGOST = gost;
         }
     }
+
     for (let key in nut){
-        if ("7798-70" === gost){
+        if (nut[key].complianceWithBolt === gost){
             ourNut = nut[key][diameter][0];
             ourNutGOSTname = nut[key].nameGOST;
             ourNut.gost = nut[key].gost;
@@ -19,7 +23,7 @@ function boltSelection(diameter, package, numberOfNuts, gost) {
     }
 
     for (let key in flatWasher){
-        if ("7798-70" === gost){
+        if (flatWasher[key].complianceWithBolt === gost){
             ourFlatWasher = flatWasher[key][diameter][0];
             ourFlatWasherGOSTname = flatWasher[key].nameGOST;
             ourFlatWasher.gost = flatWasher[key].gost;
@@ -27,7 +31,7 @@ function boltSelection(diameter, package, numberOfNuts, gost) {
     }
 
     for (let key in springWasher){
-        if ("7798-70" === gost){
+        if (springWasher[key].complianceWithBolt === gost){
             ourSpringWasher = springWasher[key][diameter][0];
             ourSpringWasherGOSTname = springWasher[key].nameGOST;
             ourSpringWasher.gost = springWasher[key].gost;
@@ -38,7 +42,6 @@ function boltSelection(diameter, package, numberOfNuts, gost) {
             if (ourBolts[key].notSlicedPart >= package + ourFlatWasher.height + ((numberOfNuts === 1) ? ourSpringWasher.height / 2 : 0)
             + ((numberOfNuts === 2) ? ourFlatWasher.height / 2 : 0)) {
                 ourBolt = ((ourBolts[key] === undefined) ? ourBolts[key] : ourBolts[key-1]);
-                ourBolt.gost = gost;
                 ourBolt.nameGOST = ourBoltGOSTname;
                 ourNut.nameGOST = ourNutGOSTname;
                 return {bolt: ourBolt, diameter: diameter, package: package, flatWasher: ourFlatWasher, springWasher: ourSpringWasher, nut: ourNut, numberOfNuts: numberOfNuts,
@@ -133,59 +136,36 @@ function boltSelectionButtonclick () {
     matchedBoltText.value = boltSelectionToText(boltSelection(+selectbolt, +package, +nut, selectGOST));
 }
 
-  function NutSelectionAddTable(){ //Добавляем  гайки
-    let table = document.getElementById("tableHardwareID");
-    let newRow = table.insertRow(-1);
-    let newCell = newRow.insertCell(0);
-    newCell.setAttribute("colspan", "3");
-    newCell.appendChild(document.createTextNode(`Гайка М${lastBoltSelection.diameter}`));
-    newCell = newRow.insertCell(-1);
-    newCell.setAttribute("align", "center");
-    newCell.appendChild(document.createTextNode(document.getElementById("nutID").value));
-    newCell = newRow.insertCell(-1);
-    newCell.setAttribute("align", "center");
-    newCell.appendChild(document.createTextNode(`${Math.round(( lastBoltSelection.nut.weightX1000/1000))/1000}`));
-    newCell = newRow.insertCell(-1);
-    newCell.setAttribute("align", "center");
-    newCell.appendChild(document.createTextNode(lastBoltSelection.nut.gost));
-    newCell = newRow.insertCell(-1);
-    newCell.setAttribute("align", "center");
-    newCell.appendChild(document.createTextNode(table.rows[table.rows.length-2].cells[table.rows[table.rows.length-2].cells.length-3].innerHTML.split('.', 1)));
-    newCell = newRow.insertCell(-1);
-    input = document.createElement("INPUT");
-    input.setAttribute("value","");
-    input.setAttribute("style","width:92%; text-align:center");
-    newCell.setAttribute("align", "center");
-    newCell.appendChild(input);
-    input = null;
-    newCell = newRow.insertCell(-1);
-    newCell.setAttribute("style", "display:none");
-    newCell.appendChild(document.createTextNode(`${lastBoltSelection.nut.weightX1000}`));
-    newCell = newRow.insertCell(-1);
-    newCell.setAttribute("style", "display:none");
-    newCell.appendChild(document.createTextNode(document.getElementById("nutID").value));
-  }
-
 function boltSelectionAddTable () { //Добавляем  болт
-
     let table = document.getElementById("tableHardwareID");
     let input = document.createElement("INPUT");
     let newRow = table.insertRow(-1);
     let newCell = newRow.insertCell(0);
     newCell.setAttribute("colspan", "8");
+    newCell.setAttribute("data-exclude", "true"); //прячим ячейку в экспорте
     newCell.setAttribute("align", "center");
     input.setAttribute("style","width:99%; text-align:center");
     input.setAttribute("value","Комментарий к соединению");
     newCell.appendChild(input);
     input = null;
+    newCell = newRow.insertCell(-1); //ячейка для экспорта
+    newCell.setAttribute("style", "display:none");//ячейка для экспорта
+    newCell.setAttribute("colspan", "8");//ячейка для экспорта
+    newCell.setAttribute("data-a-h", "center");
+    newCell.setAttribute("data-b-a-s", "thin");
     newRow = table.insertRow(-1);
     newCell = newRow.insertCell(-1);
+    newCell.setAttribute("data-b-a-s", "thin");
     newCell.appendChild(document.createTextNode(`Болт М${lastBoltSelection.diameter}`));
     newCell = newRow.insertCell(-1);
     newCell.setAttribute("align", "center");
+    newCell.setAttribute("data-a-h", "center");
+    newCell.setAttribute("data-b-a-s", "thin");
     newCell.appendChild(document.createTextNode(`${lastBoltSelection.package}`));
     newCell = newRow.insertCell(-1);
     newCell.setAttribute("align", "center");
+    newCell.setAttribute("data-a-h", "center");
+    newCell.setAttribute("data-b-a-s", "thin");
     if (lastBoltSelection.bolt.recommended === false){
     newCell.appendChild(document.createTextNode(`${lastBoltSelection.bolt.length}*`));
     }
@@ -195,34 +175,102 @@ function boltSelectionAddTable () { //Добавляем  болт
     newCell = newRow.insertCell(-1);
     input = document.createElement("INPUT");
     input.setAttribute("value","1");
+    newCell.setAttribute("data-exclude", "true"); //прячим ячейку в экспорте
     input.setAttribute("style","width:92%; text-align:center");
     input.setAttribute("oninput", "recalculationMass()");
     newCell.setAttribute("align", "center");
+    
     newCell.appendChild(input);
     input = null;
+    newCell = newRow.insertCell(-1);//добавчлем ячейку для экспорта
+    newCell.setAttribute("style", "display:none");
+    newCell.setAttribute("data-a-h", "center");
+    newCell.setAttribute("data-b-a-s", "thin");
     newCell = newRow.insertCell(-1);
     newCell.setAttribute("align", "center");
+    newCell.setAttribute("data-a-h", "center");
+    newCell.setAttribute("data-b-a-s", "thin");
     newCell.appendChild(document.createTextNode(`${Math.round((1 * lastBoltSelection.bolt.weightX1000/1000))/1000}`));
     newCell = newRow.insertCell(-1);
     newCell.setAttribute("align", "center");
+    newCell.setAttribute("data-a-h", "center");
+    newCell.setAttribute("data-b-a-s", "thin");
     newCell.appendChild(document.createTextNode(`${lastBoltSelection.bolt.gost}`));
     newCell = newRow.insertCell(-1);
     newCell.setAttribute("align", "center");
+    newCell.setAttribute("data-a-h", "center");
+    newCell.setAttribute("data-b-a-s", "thin");
     newCell.appendChild(document.createTextNode(document.getElementById("strengthClassID").value));
     newCell = newRow.insertCell(-1);
     input = document.createElement("INPUT");
     input.setAttribute("value","");
     input.setAttribute("style","width:92%; text-align:center");
+    newCell.setAttribute("data-exclude", "true");
     newCell.setAttribute("align", "center");
+    newCell.setAttribute("data-a-h", "center");
+    newCell.setAttribute("data-b-a-s", "thin");
     newCell.appendChild(input);
     input = null;
     newCell = newRow.insertCell(-1);
     newCell.setAttribute("style", "display:none");
+    newCell.setAttribute("data-exclude", "true");
     newCell.appendChild(document.createTextNode(`${lastBoltSelection.bolt.weightX1000}`));
-
-
-
+    newCell = newRow.insertCell(-1);//добавчлем ячейку для экспорта примечаний
+    newCell.setAttribute("data-a-h", "center");
+    newCell.setAttribute("data-b-a-s", "thin");
+    newCell.setAttribute("style", "display:none");
 }
+
+function NutSelectionAddTable(){ //Добавляем  гайки
+    let table = document.getElementById("tableHardwareID");
+    let newRow = table.insertRow(-1);
+    let newCell = newRow.insertCell(0);
+    newCell.setAttribute("colspan", "3");
+    newCell.setAttribute("data-b-a-s", "thin");
+    newCell.appendChild(document.createTextNode(`Гайка М${lastBoltSelection.diameter}`));
+    newCell = newRow.insertCell(-1);
+    newCell.setAttribute("align", "center");
+    newCell.setAttribute("data-a-h", "center");
+    newCell.setAttribute("data-b-a-s", "thin");
+    newCell.appendChild(document.createTextNode(document.getElementById("nutID").value));
+    newCell = newRow.insertCell(-1);
+    newCell.setAttribute("align", "center");
+    newCell.setAttribute("data-a-h", "center");
+    newCell.setAttribute("data-b-a-s", "thin");
+    newCell.appendChild(document.createTextNode(`${Math.round(( lastBoltSelection.nut.weightX1000/1000))/1000}`));
+    newCell = newRow.insertCell(-1);
+    newCell.setAttribute("align", "center");
+    newCell.setAttribute("data-a-h", "center");
+    newCell.setAttribute("data-b-a-s", "thin");
+    newCell.appendChild(document.createTextNode(lastBoltSelection.nut.gost));
+    newCell = newRow.insertCell(-1);
+    newCell.setAttribute("align", "center");
+    newCell.setAttribute("data-a-h", "center");
+    newCell.setAttribute("data-b-a-s", "thin");
+    newCell.appendChild(document.createTextNode(table.rows[table.rows.length-2].cells[table.rows[table.rows.length-2].cells.length-4].innerHTML.split('.', 1)));
+    newCell = newRow.insertCell(-1);
+    input = document.createElement("INPUT");
+    input.setAttribute("value","");
+    input.setAttribute("style","width:92%; text-align:center");
+    newCell.setAttribute("align", "center");
+    newCell.setAttribute("data-exclude", "true");
+    newCell.appendChild(input);
+    input = null;
+    newCell = newRow.insertCell(-1);
+    newCell.setAttribute("style", "display:none");
+    newCell.setAttribute("data-exclude", "true");
+    newCell.appendChild(document.createTextNode(`${lastBoltSelection.nut.weightX1000}`));
+    newCell = newRow.insertCell(-1);
+    newCell.setAttribute("style", "display:none");
+    newCell.setAttribute("data-exclude", "true");
+    newCell.appendChild(document.createTextNode(document.getElementById("nutID").value));
+    newCell = newRow.insertCell(-1);//добавчлем ячейку для экспорта примечаний
+    newCell.setAttribute("data-a-h", "center");
+    newCell.setAttribute("data-b-a-s", "thin");
+    newCell.setAttribute("style", "display:none");
+  }
+
+
 
 function flatWasherSelectionAddTable () { // добавляем плоскую шайбу
     let table = document.getElementById("tableHardwareID");
@@ -230,31 +278,47 @@ function flatWasherSelectionAddTable () { // добавляем плоскую �
     let newRow = table.insertRow(-1);
     let newCell = newRow.insertCell(0);
     newCell.setAttribute("colspan", "3");
+    newCell.setAttribute("data-b-a-s", "thin");
     newCell.appendChild(document.createTextNode(`Шайба ${lastBoltSelection.diameter}`));
     newCell = newRow.insertCell(-1);
     newCell.setAttribute("align", "center");
+    newCell.setAttribute("data-a-h", "center");
+    newCell.setAttribute("data-b-a-s", "thin");
     newCell.appendChild(document.createTextNode(document.getElementById("nutID").value));
     newCell = newRow.insertCell(-1);
     newCell.setAttribute("align", "center");
+    newCell.setAttribute("data-a-h", "center");
+    newCell.setAttribute("data-b-a-s", "thin");
     newCell.appendChild(document.createTextNode(`${Math.round(( lastBoltSelection.flatWasher.weightX1000/1000))/1000}`));
     newCell = newRow.insertCell(-1);
     newCell.setAttribute("align", "center");
+    newCell.setAttribute("data-a-h", "center");
+    newCell.setAttribute("data-b-a-s", "thin");
     newCell.appendChild(document.createTextNode(lastBoltSelection.flatWasher.gost));
     newCell = newRow.insertCell(-1);
     newCell.setAttribute("align", "center");
+    newCell.setAttribute("data-a-h", "center");
+    newCell.setAttribute("data-b-a-s", "thin");
     newCell = newRow.insertCell(-1);
     input = document.createElement("INPUT");
     input.setAttribute("value","");
     input.setAttribute("style","width:92%; text-align:center");
+    newCell.setAttribute("data-exclude", "true");
     newCell.setAttribute("align", "center");
     newCell.appendChild(input);
     input = null;
     newCell = newRow.insertCell(-1);
     newCell.setAttribute("style", "display:none");
+    newCell.setAttribute("data-exclude", "true");
     newCell.appendChild(document.createTextNode(`${lastBoltSelection.flatWasher.weightX1000}`));
     newCell = newRow.insertCell(-1);
     newCell.setAttribute("style", "display:none");
+    newCell.setAttribute("data-exclude", "true");
     newCell.appendChild(document.createTextNode(document.getElementById("nutID").value));
+    newCell = newRow.insertCell(-1);//добавчлем ячейку для экспорта примечаний
+    newCell.setAttribute("data-a-h", "center");
+    newCell.setAttribute("data-b-a-s", "thin");
+    newCell.setAttribute("style", "display:none");
 }
 
 function springWasherSelectionAddTable () { //добавляем пружинную шайбу
@@ -264,31 +328,47 @@ function springWasherSelectionAddTable () { //добавляем пружинн�
     let newRow = table.insertRow(-1);
     let newCell = newRow.insertCell(0);
     newCell.setAttribute("colspan", "3");
+    newCell.setAttribute("data-b-a-s", "thin");
     newCell.appendChild(document.createTextNode(`Шайба пружинная ${lastBoltSelection.diameter}`));
     newCell = newRow.insertCell(-1);
     newCell.setAttribute("align", "center");
+    newCell.setAttribute("data-a-h", "center");
+    newCell.setAttribute("data-b-a-s", "thin");
     newCell.appendChild(document.createTextNode(document.getElementById("nutID").value));
     newCell = newRow.insertCell(-1);
     newCell.setAttribute("align", "center");
+    newCell.setAttribute("data-a-h", "center");
+    newCell.setAttribute("data-b-a-s", "thin");
     newCell.appendChild(document.createTextNode(`${Math.round(( lastBoltSelection.springWasher.weightX1000/1000))/1000}`));
     newCell = newRow.insertCell(-1);
     newCell.setAttribute("align", "center");
+    newCell.setAttribute("data-a-h", "center");
+    newCell.setAttribute("data-b-a-s", "thin");
     newCell.appendChild(document.createTextNode(lastBoltSelection.springWasher.gost));
     newCell = newRow.insertCell(-1);
     newCell.setAttribute("align", "center");
+    newCell.setAttribute("data-a-h", "center");
+    newCell.setAttribute("data-b-a-s", "thin");
     newCell = newRow.insertCell(-1);
     input = document.createElement("INPUT");
     input.setAttribute("value","");
     input.setAttribute("style","width:92%; text-align:center");
+    newCell.setAttribute("data-exclude", "true");
     newCell.setAttribute("align", "center");
     newCell.appendChild(input);
     input = null;
     newCell = newRow.insertCell(-1);
     newCell.setAttribute("style", "display:none");
+    newCell.setAttribute("data-exclude", "true");
     newCell.appendChild(document.createTextNode(`${lastBoltSelection.springWasher.weightX1000}`));
     newCell = newRow.insertCell(-1);
     newCell.setAttribute("style", "display:none");
+    newCell.setAttribute("data-exclude", "true");
     newCell.appendChild(document.createTextNode(document.getElementById("nutID").value));
+    newCell = newRow.insertCell(-1);//добавчлем ячейку для экспорта примечаний
+    newCell.setAttribute("data-a-h", "center");
+    newCell.setAttribute("data-b-a-s", "thin");
+    newCell.setAttribute("style", "display:none");
     }
 }
 
@@ -297,7 +377,8 @@ function recalculationMass () { //перерасчитываем массу та
     for (let r = 3; r<table.rows.length; r++ )
     {
         if (table.rows[r].cells[0].innerHTML.includes("Болт")){
-            table.rows[r].cells[4].innerText = Math.round((+table.rows[r].cells[3].firstChild.value * +table.rows[r].cells[8].innerText))/1000;
+            //
+            table.rows[r].cells[5].innerText = Math.round((+table.rows[r].cells[3].firstChild.value * +table.rows[r].cells[9].innerText))/1000;
             table.rows[r+1].cells[1].innerText = +table.rows[r].cells[3].firstChild.value * +table.rows[r+1].cells[7].innerText;
             table.rows[r+1].cells[2].innerText = Math.round((+table.rows[r].cells[3].firstChild.value * +table.rows[r+1].cells[7].innerText * +table.rows[r+1].cells[6].innerText))/1000;
             table.rows[r+2].cells[1].innerText = +table.rows[r].cells[3].firstChild.value * +table.rows[r+2].cells[7].innerText;
@@ -327,35 +408,29 @@ function boltSelectionButtonAddTable (){
 
 
 ///
+function inputTotable () {// перносим имуты в таблицу для экспорта таблицы
+    let table = document.getElementById("tableHardwareID");
+    for (let r = 3; r<table.rows.length; r++ )
+    {
+        
+        if (table.rows[r].cells[0].innerHTML.includes("Болт")){
+            table.rows[r-1].cells[1].innerText = table.rows[r-1].cells[0].firstChild.value; //переносим комментарий к соединению
+            table.rows[r].cells[4].innerText = table.rows[r].cells[3].firstChild.value; //кол-во болтов
+            table.rows[r].cells[10].innerText = table.rows[r].cells[8].firstChild.value;    //примечание к болтам
+            console.log(table.rows[r+1].cells[5].firstChild.value);
+            table.rows[r+1].cells[8].innerText = table.rows[r+1].cells[5].firstChild.value;    //примечание к гайкам
+            table.rows[r+2].cells[8].innerText = table.rows[r+2].cells[5].firstChild.value;    //примечание к шайьбам
+            if (table.rows[r+1].cells[7].innerText === "1") {
+                table.rows[r+3].cells[8].innerText =  table.rows[r+3].cells[5].firstChild.value;//примечание к пружинным шайбам
+            }
+        }
+    }
+}
+
 function boltsTableExport() {
+    inputTotable();
     let tab_text = "<table border='2px'><tr bgcolor='#FFFFFF'>";
     let tab = document.getElementById('tableHardwareID');
-   tab_text += tab.rows[0].innerHTML + "</tr>";
-   tab_text += tab.rows[1].innerHTML + "</tr>";
-    for (let r = 2; r < tab.rows.length; r++) {
-        if (tab.rows[r].cells.length === 1){
-            tab_text += "\n" + "<tr><td colspan=8 align=center>" + tab.rows[r].cells[0].firstChild.value + "</td></tr>";
-            r++;
-        }
-        if (tab.rows[r].cells[0].innerHTML.includes("Болт")){
-            tab_text += "\n" + "<tr><td>" + tab.rows[r].cells[0].innerText + "</td>";
-            tab_text += "\n" + "<td align=center>" + tab.rows[r].cells[1].innerText + "</td>";
-            tab_text += "\n" + "<td align=center>" + tab.rows[r].cells[2].innerText + "</td>";
-            tab_text += "\n" + "<td align=center>" + tab.rows[r].cells[3].firstChild.value + "</td>";
-            tab_text += "\n" + "<td align=center>" + tab.rows[r].cells[4].innerText.replace('.',',') + "</td>";
-            tab_text += "\n" + "<td align=center>" + tab.rows[r].cells[5].innerText + "</td>";
-            tab_text += "\n" + "<td align=center>" + " " + tab.rows[r].cells[6].innerText + "</td>";
-            tab_text += "\n" + "<td>" + tab.rows[r].cells[7].firstChild.value + "</td></tr>";
-            r++;
-        }
-        tab_text += "\n" + "<tr><td colspan=3>" + tab.rows[r].cells[0].innerText + "</td>";
-        tab_text += "\n" + "<td align=center>" + tab.rows[r].cells[1].innerText + "</td>";
-        tab_text += "\n" + "<td align=center>" + tab.rows[r].cells[2].innerText.replace('.',',') + "</td>";
-        tab_text += "\n" + "<td align=center>" + tab.rows[r].cells[3].innerText + "</td>";
-        tab_text += "\n" + "<td align=center>" + tab.rows[r].cells[4].innerText + "</td>";
-        tab_text += "\n" + "<td>" + tab.rows[r].cells[5].firstChild.value + "</td></tr>";
-        }
-    tab_text += "</table>";
     if (document.getElementById("progExportID").value === "Excel") {
     let uri = 'data:application/vnd.ms-excel,';
     let a = document.createElement('a');
@@ -365,12 +440,14 @@ function boltsTableExport() {
     a.click();
     }
     if (document.getElementById("progExportID").value === "Calc") {
-        let uri = 'data:application/scalc,';
-        let a = document.createElement('a');
-        a.setAttribute('href', uri + encodeURIComponent(tab_text));
-        a.setAttribute('download', new Date() + '.ods');
-        document.body.appendChild(a);
-        a.click();
+        //tab.rows[3].cells[3].innerText = "kadabra";
+        //TableToExcel.convert(document.getElementById('tableHardwareID'));
+        TableToExcel.convert(document.getElementById("tableHardwareID"), {
+            name: "table1.xlsx",
+            sheet: {
+              name: "Ведомость метизов"
+            }
+          });
         }
   }
 

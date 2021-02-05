@@ -35,19 +35,19 @@
     <h3 align="center">
         <button id="boltSelectionButtonAddID" onClick="boltSelectionButtonAddTable();">Добавить в ведомость</button>
     </h3>
-    <table align="center" cols=11 style="width:90%" border = 1 id="tableHardwareID">
+    <table align="center"  cols=11 style="width:90%" border = 1 id="tableHardwareID" data-cols-width="14, 10, 7, 7, 7, 10, 10, 12">
         <tr>
-            <td align="center" colspan="8">Ведомость метизов</td>
+            <td align="center" colspan="8" data-a-h="center" data-b-a-s="thin" data-f-sz="12">Ведомость метизов</td>
         </tr>
         <tr>
-            <td align="center">Наименование и диаметр</td>
-            <td align="center">Толщина пакета, мм</td>
-            <td align="center">Длина, мм</td>
-            <td align="center">Кол-во, шт</td>
-            <td align="center">Вес, кг</td>
-            <td align="center">ГОСТ</td>
-            <td align="center">Класс прочности</td>
-            <td align="center">Примечание</td>
+            <td align="center" data-a-h="center" data-a-v="middle" data-a-wrap = "true" data-b-a-s="thin">Наименование и диаметр</td>
+            <td align="center" data-a-h="center" data-a-v="middle" data-a-wrap = "true" data-b-a-s="thin">Толщина пакета, мм</td>
+            <td align="center" data-a-h="center" data-a-v="middle" data-a-wrap = "true" data-b-a-s="thin">Длина, мм</td>
+            <td align="center" data-a-h="center" data-a-v="middle" data-a-wrap = "true" data-b-a-s="thin">Кол-во, шт</td>
+            <td align="center" data-a-h="center" data-a-v="middle" data-a-wrap = "true" data-b-a-s="thin">Вес, кг</td>
+            <td align="center" data-a-h="center" data-a-v="middle" data-a-wrap = "true" data-b-a-s="thin">ГОСТ</td>
+            <td align="center" data-a-h="center" data-a-v="middle" data-a-wrap = "true" data-b-a-s="thin">Класс прочности</td>
+            <td align="center" data-a-h="center" data-a-v="middle" data-a-wrap = "true" data-b-a-s="thin">Примечание</td>
         </tr>
 
     </table>
@@ -59,8 +59,10 @@
         </select>
     </h3>
 
+    <script type="text/javascript" src="../dis/tableToExcel.js"></script>;
     <script src="hardware.js"></script>
     <script src = "bolt.js"></script>
+    
 
 </body>
 </html>
