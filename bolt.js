@@ -4,13 +4,11 @@ let lastBoltSelection;
 function boltSelection(diameter, package, numberOfNuts, gost) {
     let ourBolt;
     let ourBolts;
-    let ourBoltGOST;
     let ourBoltGOSTname;
     for (let key in bolt){
         if (bolt[key].gost === gost){
             ourBolts = bolt[key][diameter];
             ourBoltGOSTname = bolt[key].nameGOST;
-            ourBoltGOST = gost;
         }
     }
 
@@ -42,6 +40,7 @@ function boltSelection(diameter, package, numberOfNuts, gost) {
             if (ourBolts[key].notSlicedPart >= package + ourFlatWasher.height + ((numberOfNuts === 1) ? ourSpringWasher.height / 2 : 0)
             + ((numberOfNuts === 2) ? ourFlatWasher.height / 2 : 0)) {
                 ourBolt = ((ourBolts[key] === undefined) ? ourBolts[key] : ourBolts[key-1]);
+                ourBolt.gost = gost;
                 ourBolt.nameGOST = ourBoltGOSTname;
                 ourNut.nameGOST = ourNutGOSTname;
                 return {bolt: ourBolt, diameter: diameter, package: package, flatWasher: ourFlatWasher, springWasher: ourSpringWasher, nut: ourNut, numberOfNuts: numberOfNuts,
