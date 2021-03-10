@@ -1,4 +1,4 @@
-export let gost779870 = {
+export const gost779870 = {
   //Болт
   gost: "7798-70",
   nameGOST:
@@ -3564,7 +3564,7 @@ export let gost779870 = {
   ],
 };
 
-export let gost591570 = {
+export const gost591570 = {
   // гайки
   complianceWithBolt: "7798-70",
   gost: "5915-70",
@@ -3586,7 +3586,7 @@ export let gost591570 = {
   48: [{ height: 38, weightX1000: 956.2 }],
 };
 
-export let gost1137178 = {
+export const gost1137178 = {
   // Плоские шайбы
   complianceWithBolt: "7798-70",
   gost: "11371-78",
@@ -3608,7 +3608,7 @@ export let gost1137178 = {
   48: [{ height: 8, weightX1000: 283.956 }],
 };
 
-export let gost640270 = {
+export const gost640270 = {
   // Пружинные шайбы
   complianceWithBolt: "7798-70",
   gost: "6402-70",

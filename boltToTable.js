@@ -1,4 +1,4 @@
-let table = document.getElementById("tableHardwareID");
+const table = document.getElementById("tableHardwareID");
 let input;
 let newRow;
 let newCell;

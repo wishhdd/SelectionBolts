@@ -19,32 +19,32 @@ import {
   gost3248442014N,
   gost324846,
 } from "./hardware/32484.4-2014.js";
-let bolt = { gost779870, gost526442006, gost3248432014B, gost3248442014B };
-let nut = { gost591570, gost526452006, gost3248432014N, gost3248442014N };
-let flatWasher = { gost1137178, gost526462006, gost324845, gost324846 };
-let springWasher = { gost640270 };
+const bolt = { gost779870, gost526442006, gost3248432014B, gost3248442014B };
+const nut = { gost591570, gost526452006, gost3248432014N, gost3248442014N };
+const flatWasher = { gost1137178, gost526462006, gost324845, gost324846 };
+const springWasher = { gost640270 };
 
-function nutSelection(boltGost, boltDiameter) {
+function nutSelection(boltGost, boltDiameter, gostNuts) {
   // Выбираем гайку
   let ourNut;
-  for (let key in nut) {
-    if (nut[key].complianceWithBolt === boltGost) {
-      ourNut = nut[key][boltDiameter][0];
+  for (let key in gostNuts) {
+    if (gostNuts[key].complianceWithBolt === boltGost) {
+      ourNut = gostNuts[key][boltDiameter][0];
       ourNut.diameter = boltDiameter;
-      ourNut.gost = nut[key].gost;
+      ourNut.gost = gostNuts[key].gost;
       break;
     }
   }
   return { ourNut };
 }
 
-function flatWasherSelection(boltGost, boltDiameter) {
+function flatWasherSelection(boltGost, boltDiameter, gostFlatWasher) {
   // Выбираем плоскую шайбу
   let ourFlatWasher;
-  for (let key in flatWasher) {
-    if (flatWasher[key].complianceWithBolt === boltGost) {
-      ourFlatWasher = flatWasher[key][boltDiameter][0];
-      ourFlatWasher.gost = flatWasher[key].gost;
+  for (let key in gostFlatWasher) {
+    if (gostFlatWasher[key].complianceWithBolt === boltGost) {
+      ourFlatWasher = gostFlatWasher[key][boltDiameter][0];
+      ourFlatWasher.gost = gostFlatWasher[key].gost;
       ourFlatWasher.diameter = boltDiameter;
       break;
     }
@@ -52,13 +52,13 @@ function flatWasherSelection(boltGost, boltDiameter) {
   return { ourFlatWasher };
 }
 
-function springWasherSelection(boltGost, boltDiameter) {
+function springWasherSelection(boltGost, boltDiameter, gostSpringWasher) {
   // Выбираем пружиную шайбу
   let ourSpringWasher;
-  for (let key in springWasher) {
-    if (springWasher[key].complianceWithBolt === boltGost) {
-      ourSpringWasher = springWasher[key][boltDiameter][0];
-      ourSpringWasher.gost = springWasher[key].gost;
+  for (let key in gostSpringWasher) {
+    if (gostSpringWasher[key].complianceWithBolt === boltGost) {
+      ourSpringWasher = gostSpringWasher[key][boltDiameter][0];
+      ourSpringWasher.gost = gostSpringWasher[key].gost;
       ourSpringWasher.diameter = boltDiameter;
       break;
     }
@@ -77,8 +77,8 @@ export function cutBoltSelection(
   let ourBolts;
   let ourBolt;
   ourBoltKit = Object.assign(
-    flatWasherSelection(boltGost, boltDiameter),
-    nutSelection(boltGost, boltDiameter)
+    flatWasherSelection(boltGost, boltDiameter, flatWasher),
+    nutSelection(boltGost, boltDiameter, nut)
   );
   ourBoltKit.ourNut.count = +numberOfNuts;
   let ourPackageThickness =
@@ -94,7 +94,7 @@ export function cutBoltSelection(
     // если разршена пружиная шайба и одна гайка
     ourBoltKit = Object.assign(
       ourBoltKit,
-      springWasherSelection(boltGost, boltDiameter)
+      springWasherSelection(boltGost, boltDiameter, springWasher)
     );
     ourPackageThickness =
       +ourPackageThickness + +ourBoltKit.ourSpringWasher.height;
@@ -166,8 +166,8 @@ export function stretchingBoltSelection(
   let ourBolts;
   let ourBolt;
   ourBoltKit = Object.assign(
-    flatWasherSelection(boltGost, boltDiameter),
-    nutSelection(boltGost, boltDiameter)
+    flatWasherSelection(boltGost, boltDiameter, flatWasher),
+    nutSelection(boltGost, boltDiameter, nut)
   );
   ourBoltKit.ourNut.count = +numberOfNuts;
   let ourPackageThickness =
@@ -184,7 +184,7 @@ export function stretchingBoltSelection(
     // если разршена пружиная шайба и одна гайка
     ourBoltKit = Object.assign(
       ourBoltKit,
-      springWasherSelection(boltGost, boltDiameter)
+      springWasherSelection(boltGost, boltDiameter, springWasher)
     );
     ourPackageThickness =
       +ourPackageThickness + +ourBoltKit.ourSpringWasher.height;

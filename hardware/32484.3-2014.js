@@ -1,4 +1,4 @@
-export let gost3248432014B = {
+export const gost3248432014B = {
   // Болт
   gost: "32484.3-2014",
   nameGOST:
@@ -1160,7 +1160,7 @@ export let gost3248432014B = {
   ],
 };
 
-export let gost3248432014N = {
+export const gost3248432014N = {
   // Гайки
   complianceWithBolt: "32484.3-2014",
   gost: "32484.3-2014",
@@ -1179,7 +1179,7 @@ export let gost3248432014N = {
   36: [{ height: 30.2, weightX1000: 0 }],
 };
 
-export let gost324845 = {
+export const gost324845 = {
   // Шайба
   complianceWithBolt: "32484.3-2014",
   gost: "32484.5-2013 или 32484.6-2013",
