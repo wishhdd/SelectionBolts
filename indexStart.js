@@ -9,11 +9,7 @@ import { gost3248432014B } from "./hardware/32484.3-2014.js";
 import { gost3248442014B } from "./hardware/32484.4-2014.js";
 const bolt = { gost779870, gost526442006, gost3248432014B, gost3248442014B };
 
-import {
-  cutBoltSelection,
-  stretchingBoltSelection,
-  boltSelectionToText,
-} from "./boltSelection.js";
+import { cutBoltSelection, stretchingBoltSelection, boltSelectionToText } from "./boltSelection.js";
 import { lastBoltkitToTable } from "./boltToTable.js";
 
 let gostID = document.getElementById("gostID");
@@ -26,25 +22,24 @@ let nut = document.getElementById("nutID").options[nutIndex].text;
 let packageThickness = document.getElementById("packageThicknessID").value;
 let boltWorkIndex;
 let matchedBoltText = document.getElementById("matchedBoltID");
-matchedBoltText.width = window.innerWidth;
+//matchedBoltText.width = window.innerWidth;
 
 let lastBoltKit;
 
 boltGostFill();
 boltDiametrFill();
 boltReСount();
+maxPackageThickness();
 
 document.getElementById("gostID").addEventListener("change", boltDiametrFill);
 document.getElementById("gostID").addEventListener("change", boltReСount);
+document.getElementById("gostID").addEventListener("change", maxPackageThickness);
 document.getElementById("boltID").addEventListener("change", boltReСount);
-document
-  .getElementById("packageThicknessID")
-  .addEventListener("change", boltReСount);
+document.getElementById("boltID").addEventListener("change", maxPackageThickness);
+document.getElementById("packageThicknessID").addEventListener("change", boltReСount);
 document.getElementById("nutID").addEventListener("change", boltReСount);
 document.getElementById("bolWorkID").addEventListener("change", boltReСount);
-document
-  .getElementById("boltSelectionButtonID")
-  .addEventListener("click", boltReСount);
+document.getElementById("boltSelectionButtonID").addEventListener("click", boltReСount);
 document
   .getElementById("boltSelectionButtonAddID")
   .addEventListener("click", lastBoltkitToTableFunc);
@@ -65,8 +60,7 @@ function boltDiametrFill() {
   // Заполняем диаметр от гостов
   let selectboltID = document.getElementById("boltID");
   let selectGOSTIndex = document.getElementById("gostID").options.selectedIndex;
-  let selectGOST = document.getElementById("gostID").options[selectGOSTIndex]
-    .text;
+  let selectGOST = document.getElementById("gostID").options[selectGOSTIndex].text;
   selectboltID.options.length = 0;
   let i = 0;
   for (let key in bolt) {
@@ -82,33 +76,40 @@ function boltDiametrFill() {
   selectbolt = document.getElementById("boltID").options[selectboltIndex].text;
 }
 
+function maxPackageThickness() {
+  selectGOST = document.getElementById("gostID").options[selectGOSTIndex].text;
+  selectboltIndex = document.getElementById("boltID").options.selectedIndex;
+  selectbolt = document.getElementById("boltID").options[selectboltIndex].text;
+  let maxlengthBolt;
+  for (let key in bolt) {
+    if (bolt[key].gost === selectGOST) {
+      maxlengthBolt = +bolt[key][selectbolt][bolt[key][selectbolt].length - 1].length;
+      document.getElementById("packageThicknessID").setAttribute("max", maxlengthBolt);
+      break;
+    }
+  }
+}
+
 function boltReСount() {
   //пересчитываем болт
-  selectGOSTIndex = document.getElementById("gostID").options.selectedIndex;
+
   selectGOST = document.getElementById("gostID").options[selectGOSTIndex].text;
   selectboltIndex = document.getElementById("boltID").options.selectedIndex;
   selectbolt = document.getElementById("boltID").options[selectboltIndex].text;
   nutIndex = document.getElementById("nutID").options.selectedIndex;
   nut = document.getElementById("nutID").options[nutIndex].text;
+  document.getElementById("packageThicknessID").value = +document.getElementById(
+    "packageThicknessID"
+  ).value; //теряем нули в начале строки
   packageThickness = document.getElementById("packageThicknessID").value;
   boltWorkIndex = document.getElementById("bolWorkID").options.selectedIndex;
   if (boltWorkIndex === 0) {
-    lastBoltKit = cutBoltSelection(
-      selectGOST,
-      selectbolt,
-      nut,
-      packageThickness
-    );
+    lastBoltKit = cutBoltSelection(selectGOST, selectbolt, nut, packageThickness);
   }
   if (boltWorkIndex === 1) {
-    lastBoltKit = stretchingBoltSelection(
-      selectGOST,
-      selectbolt,
-      nut,
-      packageThickness
-    );
+    lastBoltKit = stretchingBoltSelection(selectGOST, selectbolt, nut, packageThickness);
   }
-  matchedBoltText.value = boltSelectionToText(lastBoltKit);
+  matchedBoltText.textContent = boltSelectionToText(lastBoltKit);
 }
 
 function lastBoltkitToTableFunc() {

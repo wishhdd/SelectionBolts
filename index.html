@@ -4,15 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="shortcut icon" href="/media/nut.png" type="image/png">
+    <title>Подбор болтов</title>
 
 
-    <!-- Yandex.Metrika counter -->
+
 <script type="text/javascript" >
     (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
     m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
     (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
- 
     ym(73467442, "init", {
          clickmap:true,
          trackLinks:true,
@@ -20,17 +21,16 @@
     });
  </script>
  <noscript><div><img src="https://mc.yandex.ru/watch/73467442" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
- <!-- /Yandex.Metrika counter -->
 
 
- 
+
 </head>
 <body>
     <script type="module" src="indexStart.js"></script>
     <script type="text/javascript" src="./dis/tableToExcel.js"></script>
 
-    <h1 align="center">Подбор длины болта в зависимости от толщины стягиваемого пакета</h1>
-    <h2 align="center"> ГОСТ болта:
+    <h1>Подбор длины болта в зависимости от толщины стягиваемого пакета</h1>
+    <h2> ГОСТ болта:
         <select id="gostID"></select>
         , диаметр:
     <select id="boltID"></select>
@@ -47,7 +47,7 @@
         <option>2</option>
     </select>
     , толщина пакета:
-    <input id="packageThicknessID" maxlength = "3" min = "0" size = "3" type ="number" value="0"></input>
+    <input id="packageThicknessID" min = "0" type ="number" value="0"></input>
     , болт работает
     <select id="bolWorkID">
         <option>на срез</option>
@@ -55,32 +55,28 @@
     </select>
         <button id="boltSelectionButtonID">Подобрать</button>
     </h2>
-    <h4 align="center">
-        <textarea id="matchedBoltID" style="width:90%" readonly></textarea>
-    </h4>
-    <h3 align="center">
-        <button id="boltSelectionButtonAddID">Добавить в ведомость</button>
-    </h3>
-    <table align="center"  cols=11 style="visibility : hidden" border = 1 id="tableHardwareID" data-cols-width="14, 10, 7, 7, 7, 10, 10, 12">
+    <div id="matchedBoltID"></div>
+    <button id="boltSelectionButtonAddID" class="centerObj">Добавить в ведомость</button>
+    <table class = "table hide" cols=11 id="tableHardwareID" data-cols-width="14, 10, 7, 7, 7, 10, 10, 12">
         <tr>
-            <td align="center" colspan="8" data-a-h="center" data-b-a-s="thin" data-f-sz="12">Ведомость метизов</td>
+            <td class = "cellCenter cellBorder" colspan="8" data-a-h="center" data-b-a-s="thin" data-f-sz="12">Ведомость метизов</td>
         </tr>
         <tr>
-            <td align="center" data-a-h="center" data-a-v="middle" data-a-wrap = "true" data-b-a-s="thin">Наименование и диаметр</td>
-            <td align="center" data-a-h="center" data-a-v="middle" data-a-wrap = "true" data-b-a-s="thin">Толщина пакета, мм</td>
-            <td align="center" data-a-h="center" data-a-v="middle" data-a-wrap = "true" data-b-a-s="thin">Длина, мм</td>
-            <td align="center" data-a-h="center" data-a-v="middle" data-a-wrap = "true" data-b-a-s="thin">Кол-во, шт</td>
-            <td align="center" data-a-h="center" data-a-v="middle" data-a-wrap = "true" data-b-a-s="thin">Вес, кг</td>
-            <td align="center" data-a-h="center" data-a-v="middle" data-a-wrap = "true" data-b-a-s="thin">ГОСТ</td>
-            <td align="center" data-a-h="center" data-a-v="middle" data-a-wrap = "true" data-b-a-s="thin">Класс прочности</td>
-            <td align="center" data-a-h="center" data-a-v="middle" data-a-wrap = "true" data-b-a-s="thin">Примечание</td>
+            <td class = "cellCenter cellBorder" data-a-h="center" data-a-v="middle" data-a-wrap = "true" data-b-a-s="thin">Наименование и диаметр</td>
+            <td class = "cellCenter cellBorder" data-a-h="center" data-a-v="middle" data-a-wrap = "true" data-b-a-s="thin">Толщина пакета, мм</td>
+            <td class = "cellCenter cellBorder" data-a-h="center" data-a-v="middle" data-a-wrap = "true" data-b-a-s="thin">Длина, мм</td>
+            <td class = "cellCenter cellBorder" data-a-h="center" data-a-v="middle" data-a-wrap = "true" data-b-a-s="thin">Кол-во, шт</td>
+            <td class = "cellCenter cellBorder" data-a-h="center" data-a-v="middle" data-a-wrap = "true" data-b-a-s="thin">Вес, кг</td>
+            <td class = "cellCenter cellBorder" data-a-h="center" data-a-v="middle" data-a-wrap = "true" data-b-a-s="thin">ГОСТ</td>
+            <td class = "cellCenter cellBorder" data-a-h="center" data-a-v="middle" data-a-wrap = "true" data-b-a-s="thin">Класс прочности</td>
+            <td class = "cellCenter cellBorder" data-a-h="center" data-a-v="middle" data-a-wrap = "true" data-b-a-s="thin">Примечание</td>
         </tr>
     </table>
-    <h3 align="center">
-        <button id="boltsTableExportExcelID" style="display:none">Экспортировать в</button>
-        <select id="progExportID" style="display:none">
+    <div id="boltsTableExportExcelDiv" class="centerObj hide">
+        <button id="boltsTableExportExcelID" >Экспортировать в</button>
+        <select id="progExportID">
             <option>Excel</option>
         </select>
-    </h3>
+    </div>
 </body>
 </html>

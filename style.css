@@ -1,0 +1,55 @@
+h1 {
+  text-align: center;
+  font-size: 250%;
+}
+h2 {
+  text-align: center;
+  font-size: 175%;
+}
+
+h3 {
+  text-align: center;
+  font-size: 100%;
+}
+
+#matchedBoltID {
+  border: 1px solid black;
+  margin: 0px 10px 10px 10px;
+  padding: 5px;
+  text-align: center;
+}
+.centerObj {
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  text-align: center;
+}
+.table {
+  margin: 10px auto;
+  border: 1px solid black;
+  border-spacing: 0;
+}
+
+.hide {
+  visibility: hidden;
+}
+
+.noneDisplay {
+  display: none;
+}
+.cellCenter {
+  text-align: center;
+  padding: 1px 5px;
+}
+
+.cellBorder {
+  border: 1px solid black;
+}
+
+.inputNoBorder {
+  border: none;
+  text-align: center;
+  width: 98%;
+  outline: 0;
+  font-size: 14px;
+}
