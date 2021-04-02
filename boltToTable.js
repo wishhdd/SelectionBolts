@@ -17,16 +17,19 @@ export function lastBoltkitToTable(lastBoltKit) {
   button.addEventListener("click", boltsTableExport);
 }
 
-function addCell(alignTrue) {
-  // добавляем ячейку обрамлением
+function addСentreCell() {
   newCell = newRow.insertCell(-1);
   newCell.classList.add("cellBorder");
   newCell.setAttribute("data-b-a-s", "thin");
-  if (alignTrue) {
-    newCell.setAttribute("align", "center");
-    newCell.setAttribute("data-a-h", "center");
-  }
+  newCell.setAttribute("align", "center");
+  newCell.setAttribute("data-a-h", "center");
 }
+function addCell() {
+  newCell = newRow.insertCell(-1);
+  newCell.classList.add("cellBorder");
+  newCell.setAttribute("data-b-a-s", "thin");
+}
+
 function addNameConnectionCommentCell() {
   newRow = table.insertRow(-1);
   newCell = newRow.insertCell(0);
@@ -38,25 +41,12 @@ function addNameConnectionCommentCell() {
   input.setAttribute("value", "Комментарий к соединению");
   newCell.appendChild(input);
   input = null;
-  addCell(true); //ячейка для экспорта
+  addСentreCell(); //ячейка для экспорта
   newCell.classList.add("noneDisplay"); //ячейка для экспорта
   newCell.setAttribute("colspan", "8"); //ячейка для экспорта
 }
-function boltToTable(lastBolt) {
-  // Добавляем болт в таблицу
-  addNameConnectionCommentCell();
-  newRow = table.insertRow(-1);
-  addCell(false);
-  newCell.appendChild(document.createTextNode(`Болт М${lastBolt.ourBolt.diameter}`));
-  addCell(true);
-  newCell.appendChild(document.createTextNode(`${lastBolt.packageThickness}`));
-  addCell(true);
-  if (!lastBolt.ourBolt.recommended) {
-    newCell.appendChild(document.createTextNode(`${lastBolt.ourBolt.length}*`));
-  }
-  if (lastBolt.ourBolt.recommended) {
-    newCell.appendChild(document.createTextNode(`${lastBolt.ourBolt.length}`));
-  }
+
+function addInputQuantityCell() {
   newCell = newRow.insertCell(-1);
   newCell.classList.add("cellBorder");
   input = document.createElement("INPUT");
@@ -68,27 +58,53 @@ function boltToTable(lastBolt) {
   input.addEventListener("change", recalculationMass);
   newCell.appendChild(input);
   input = null;
-  addCell(true); //добавчлем ячейку для экспорта
-  newCell.classList.add("noneDisplay"); //ячейка для экспорта
-  addCell(true);
-  newCell.appendChild(
-    document.createTextNode(`${Math.round((1 * lastBolt.ourBolt.weightX1000) / 1000) / 1000}`)
-  );
-  addCell(true);
-  newCell.appendChild(document.createTextNode(`${lastBolt.ourBolt.gost}`));
-  addCell(true);
-  newCell.appendChild(document.createTextNode(document.getElementById("strengthClassID").value));
-  addCell(true);
+}
+
+function addInputNoteCell() {
+  newCell = newRow.insertCell(-1);
+  newCell.classList.add("cellBorder");
+  newCell.setAttribute("data-b-a-s", "thin");
+  newCell.setAttribute("align", "center");
+  newCell.setAttribute("data-a-h", "center");
   input = document.createElement("INPUT");
   input.classList.add("inputNoBorder");
   newCell.setAttribute("data-exclude", "true");
   newCell.appendChild(input);
   input = null;
+}
+
+function boltToTable(lastBolt) {
+  // Добавляем болт в таблицу
+  addNameConnectionCommentCell();
+  newRow = table.insertRow(-1);
+  addCell();
+  newCell.appendChild(document.createTextNode(`Болт М${lastBolt.ourBolt.diameter}`));
+  addСentreCell();
+  newCell.appendChild(document.createTextNode(`${lastBolt.packageThickness}`));
+  addСentreCell();
+  if (!lastBolt.ourBolt.recommended) {
+    newCell.appendChild(document.createTextNode(`${lastBolt.ourBolt.length}*`));
+  }
+  if (lastBolt.ourBolt.recommended) {
+    newCell.appendChild(document.createTextNode(`${lastBolt.ourBolt.length}`));
+  }
+  addInputQuantityCell();
+  addСentreCell(); //добавчлем ячейку для экспорта
+  newCell.classList.add("noneDisplay"); //ячейка для экспорта
+  addСentreCell();
+  newCell.appendChild(
+    document.createTextNode(`${Math.round((1 * lastBolt.ourBolt.weightX1000) / 1000) / 1000}`)
+  );
+  addСentreCell();
+  newCell.appendChild(document.createTextNode(`${lastBolt.ourBolt.gost}`));
+  addСentreCell();
+  newCell.appendChild(document.createTextNode(document.getElementById("strengthClassID").value));
+  addInputNoteCell();
   newCell = newRow.insertCell(-1);
   newCell.classList.add("noneDisplay"); //ячейка для экспорта
   newCell.setAttribute("data-exclude", "true");
   newCell.appendChild(document.createTextNode(`${lastBolt.ourBolt.weightX1000}`));
-  addCell(true); //добавчлем ячейку для экспорта примечаний
+  addСentreCell(); //добавчлем ячейку для экспорта примечаний
   newCell.classList.add("noneDisplay"); //ячейка для экспорта
 }
 
@@ -104,13 +120,13 @@ function nutToTable(ourNut) {
   // Добавляем  гайки
   addFirstCellName();
   newCell.appendChild(document.createTextNode(`Гайка М${ourNut.diameter}`));
-  addCell(true);
+  addСentreCell();
   newCell.appendChild(document.createTextNode(ourNut.count));
-  addCell(true);
+  addСentreCell();
   newCell.appendChild(document.createTextNode(`${Math.round(ourNut.weightX1000 / 1000) / 1000}`));
-  addCell(true);
+  addСentreCell();
   newCell.appendChild(document.createTextNode(ourNut.gost));
-  addCell(true);
+  addСentreCell();
   newCell.appendChild(
     document.createTextNode(
       table.rows[table.rows.length - 2].cells[
@@ -118,17 +134,12 @@ function nutToTable(ourNut) {
       ].innerHTML.split(".", 1)
     )
   );
-  addCell(true);
-  newCell.setAttribute("data-exclude", "true");
-  input = document.createElement("INPUT");
-  input.classList.add("inputNoBorder");
-  newCell.appendChild(input);
-  input = null;
-  addCell(true);
+  addInputNoteCell();
+  addСentreCell();
   newCell.classList.add("noneDisplay"); //ячейка для экспорта
   newCell.setAttribute("data-exclude", "true");
   newCell.appendChild(document.createTextNode(`${ourNut.weightX1000}`));
-  addCell(true);
+  addСentreCell();
   newCell.classList.add("noneDisplay"); //ячейка для экспорта
   newCell.setAttribute("data-exclude", "true");
   newCell.appendChild(document.createTextNode(document.getElementById("nutID").value));
@@ -142,21 +153,16 @@ function flatWasherToTable(lastFlatWasher) {
   // добавляем плоскую шайбу
   addFirstCellName();
   newCell.appendChild(document.createTextNode(`Шайба ${lastFlatWasher.diameter}`));
-  addCell(true);
+  addСentreCell();
   newCell.appendChild(document.createTextNode(lastFlatWasher.count));
-  addCell(true);
+  addСentreCell();
   newCell.appendChild(
     document.createTextNode(`${Math.round(lastFlatWasher.weightX1000 / 1000) / 1000}`)
   );
-  addCell(true);
+  addСentreCell();
   newCell.appendChild(document.createTextNode(lastFlatWasher.gost));
-  addCell(true);
-  addCell(true);
-  newCell.setAttribute("data-exclude", "true");
-  input = document.createElement("INPUT");
-  input.classList.add("inputNoBorder");
-  newCell.appendChild(input);
-  input = null;
+  addСentreCell();
+  addInputNoteCell();
   newCell = newRow.insertCell(-1);
   newCell.classList.add("noneDisplay"); //ячейка для экспорта
   newCell.setAttribute("data-exclude", "true");
@@ -165,7 +171,7 @@ function flatWasherToTable(lastFlatWasher) {
   newCell.classList.add("noneDisplay"); //ячейка для экспорта
   newCell.setAttribute("data-exclude", "true");
   newCell.appendChild(document.createTextNode(document.getElementById("nutID").value));
-  addCell(true); //добавчлем ячейку для экспорта примечаний
+  addСentreCell(); //добавчлем ячейку для экспорта примечаний
   newCell.classList.add("noneDisplay"); //ячейка для экспорта
 }
 
@@ -173,21 +179,16 @@ function springWasherToTable(lastSpringWasher) {
   // добавляем пружинную шайбу
   addFirstCellName();
   newCell.appendChild(document.createTextNode(`Шайба пружинная ${lastSpringWasher.diameter}`));
-  addCell(true);
+  addСentreCell();
   newCell.appendChild(document.createTextNode(lastSpringWasher.count));
-  addCell(true);
+  addСentreCell();
   newCell.appendChild(
     document.createTextNode(`${Math.round(lastSpringWasher.weightX1000 / 1000) / 1000}`)
   );
-  addCell(true);
+  addСentreCell();
   newCell.appendChild(document.createTextNode(lastSpringWasher.gost));
-  addCell(true);
-  input = document.createElement("INPUT");
-  input.classList.add("inputNoBorder");
-  addCell(true);
-  newCell.setAttribute("data-exclude", "true");
-  newCell.appendChild(input);
-  input = null;
+  addСentreCell();
+  addInputNoteCell();
   newCell = newRow.insertCell(-1);
   newCell.classList.add("noneDisplay"); //ячейка для экспорта
   newCell.setAttribute("data-exclude", "true");
@@ -196,7 +197,7 @@ function springWasherToTable(lastSpringWasher) {
   newCell.classList.add("noneDisplay"); //ячейка для экспорта
   newCell.setAttribute("data-exclude", "true");
   newCell.appendChild(document.createTextNode(lastSpringWasher.count));
-  addCell(true); //добавчлем ячейку для экспорта примечаний
+  addСentreCell(); //добавчлем ячейку для экспорта примечаний
   newCell.classList.add("noneDisplay"); //ячейка для экспорта
 }
 

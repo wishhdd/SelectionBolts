@@ -39,7 +39,6 @@ document.getElementById("boltID").addEventListener("change", maxPackageThickness
 document.getElementById("packageThicknessID").addEventListener("change", boltReСount);
 document.getElementById("nutID").addEventListener("change", boltReСount);
 document.getElementById("bolWorkID").addEventListener("change", boltReСount);
-document.getElementById("boltSelectionButtonID").addEventListener("click", boltReСount);
 document
   .getElementById("boltSelectionButtonAddID")
   .addEventListener("click", lastBoltkitToTableFunc);
@@ -110,6 +109,11 @@ function boltReСount() {
     lastBoltKit = stretchingBoltSelection(selectGOST, selectbolt, nut, packageThickness);
   }
   matchedBoltText.textContent = boltSelectionToText(lastBoltKit);
+  if (Object.keys(lastBoltKit).length === 0) {
+    document.getElementById("boltSelectionButtonAddID").disabled = true;
+  } else {
+    document.getElementById("boltSelectionButtonAddID").disabled = false;
+  }
 }
 
 function lastBoltkitToTableFunc() {

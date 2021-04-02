@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="rus">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,74 +10,103 @@
     <title>Подбор болтов</title>
 
 
-
-<script type="text/javascript" >
-    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
-    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
-    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
-    ym(73467442, "init", {
-         clickmap:true,
-         trackLinks:true,
-         accurateTrackBounce:true
-    });
- </script>
- <noscript><div><img src="https://mc.yandex.ru/watch/73467442" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
-
+    <script type="text/javascript">
+        (function (m, e, t, r, i, k, a) {
+            m[i] = m[i] || function () { (m[i].a = m[i].a || []).push(arguments) };
+            m[i].l = 1 * new Date(); k = e.createElement(t), a = e.getElementsByTagName(t)[0], k.async = 1, k.src = r, a.parentNode.insertBefore(k, a)
+        })
+            (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+        ym(73467442, "init", {
+            clickmap: true,
+            trackLinks: true,
+            accurateTrackBounce: true
+        });
+    </script>
+    <noscript>
+        <div><img src="https://mc.yandex.ru/watch/73467442" style="position:absolute; left:-9999px;" alt="" /></div>
+    </noscript>
 
 
 </head>
+
 <body>
     <script type="module" src="indexStart.js"></script>
     <script type="text/javascript" src="./dis/tableToExcel.js"></script>
+    <div class="grid-container">
+        <h1>Подбор длины болта в зависимости от толщины стягиваемого пакета</h1>
+        <h2> ГОСТ:
+            <select id="gostID"></select>
+            Диаметр:
+            <select id="boltID"></select>
+            Класс прочности:
+            <select id="strengthClassID">
+                <option>5.6</option>
+                <option>8.8</option>
+                <option>10.9</option>
+                <option>12.9</option>
+            </select>
+            Кол-во гаек:
+            <select id="nutID">
+                <option>1</option>
+                <option>2</option>
+            </select>
+            Пакета:
+            <input id="packageThicknessID" min="0" type="number" value="0" size="3"></input>
+            Работает:
+            <select id="bolWorkID">
+                <option>на срез</option>
+                <option>на растяжение</option>
+            </select>
+            <button id="boltSelectionButtonAddID" class="centerObj">Добавить в ведомость</button>
+        </h2>
+        <div id="boltsTableExportExcelDiv" class="hide">
+            <button id="boltsTableExportExcelID">Экспорт в</button>
+            <select id="progExportID">
+                <option>Excel</option>
+            </select>
+            <br><a href="https://github.com/wishhdd/SelectionBolts" target="_blank"><img src="/media/github.png"
+                    alt="github"></a>
+        </div>
 
-    <h1>Подбор длины болта в зависимости от толщины стягиваемого пакета</h1>
-    <h2> ГОСТ болта:
-        <select id="gostID"></select>
-        , диаметр:
-    <select id="boltID"></select>
-    , класс прчности:
-    <select id="strengthClassID">
-        <option>5.6</option>
-        <option>8.8</option>
-        <option>10.9</option>
-        <option>12.9</option>
-    </select>
-    , колличество гаек:
-    <select id="nutID">
-        <option>1</option>
-        <option>2</option>
-    </select>
-    , толщина пакета:
-    <input id="packageThicknessID" min = "0" type ="number" value="0"></input>
-    , болт работает
-    <select id="bolWorkID">
-        <option>на срез</option>
-        <option>на растяжение</option>
-    </select>
-        <button id="boltSelectionButtonID">Подобрать</button>
-    </h2>
-    <div id="matchedBoltID"></div>
-    <button id="boltSelectionButtonAddID" class="centerObj">Добавить в ведомость</button>
-    <table class = "table hide" cols=11 id="tableHardwareID" data-cols-width="14, 10, 7, 7, 7, 10, 10, 12">
-        <tr>
-            <td class = "cellCenter cellBorder" colspan="8" data-a-h="center" data-b-a-s="thin" data-f-sz="12">Ведомость метизов</td>
-        </tr>
-        <tr>
-            <td class = "cellCenter cellBorder" data-a-h="center" data-a-v="middle" data-a-wrap = "true" data-b-a-s="thin">Наименование и диаметр</td>
-            <td class = "cellCenter cellBorder" data-a-h="center" data-a-v="middle" data-a-wrap = "true" data-b-a-s="thin">Толщина пакета, мм</td>
-            <td class = "cellCenter cellBorder" data-a-h="center" data-a-v="middle" data-a-wrap = "true" data-b-a-s="thin">Длина, мм</td>
-            <td class = "cellCenter cellBorder" data-a-h="center" data-a-v="middle" data-a-wrap = "true" data-b-a-s="thin">Кол-во, шт</td>
-            <td class = "cellCenter cellBorder" data-a-h="center" data-a-v="middle" data-a-wrap = "true" data-b-a-s="thin">Вес, кг</td>
-            <td class = "cellCenter cellBorder" data-a-h="center" data-a-v="middle" data-a-wrap = "true" data-b-a-s="thin">ГОСТ</td>
-            <td class = "cellCenter cellBorder" data-a-h="center" data-a-v="middle" data-a-wrap = "true" data-b-a-s="thin">Класс прочности</td>
-            <td class = "cellCenter cellBorder" data-a-h="center" data-a-v="middle" data-a-wrap = "true" data-b-a-s="thin">Примечание</td>
-        </tr>
-    </table>
-    <div id="boltsTableExportExcelDiv" class="centerObj hide">
-        <button id="boltsTableExportExcelID" >Экспортировать в</button>
-        <select id="progExportID">
-            <option>Excel</option>
-        </select>
+        <div id="matchedBoltID"></div>
+
+        <div id="midDiv">
+            <table class="table hide" cols=11 id="tableHardwareID" data-cols-width="14, 10, 7, 7, 7, 10, 10, 12">
+                <tr>
+                    <td class="cellCenter cellBorder" colspan="8" data-a-h="center" data-b-a-s="thin" data-f-sz="12">
+                        Ведомость
+                        метизов</td>
+                </tr>
+                <tr>
+                    <td class="cellCenter cellBorder" width="85" data-a-h="center" data-a-v="middle" data-a-wrap="true"
+                        data-b-a-s="thin">
+                        Наименование и диаметр</td>
+                    <td class="cellCenter cellBorder" width="85" data-a-h="center" data-a-v="middle" data-a-wrap="true"
+                        data-b-a-s="thin">
+                        Толщина пакета, мм</td>
+                    <td class="cellCenter cellBorder" width="45" data-a-h="center" data-a-v="middle" data-a-wrap="true"
+                        data-b-a-s="thin">
+                        Длина, мм</td>
+                    <td class="cellCenter cellBorder" width="60" data-a-h="center" data-a-v="middle" data-a-wrap="true"
+                        data-b-a-s="thin">
+                        Кол-во, шт</td>
+                    <td class="cellCenter cellBorder" data-a-h="center" data-a-v="middle" data-a-wrap="true"
+                        data-b-a-s="thin">
+                        Вес, кг</td>
+                    <td class="cellCenter cellBorder" data-a-h="center" data-a-v="middle" data-a-wrap="true"
+                        data-b-a-s="thin">
+                        ГОСТ</td>
+                    <td class="cellCenter cellBorder" width="60" data-a-h="center" data-a-v="middle" data-a-wrap="true"
+                        data-b-a-s="thin">
+                        Класс прочности</td>
+                    <td class="cellCenter cellBorder" data-a-h="center" data-a-v="middle" data-a-wrap="true"
+                        data-b-a-s="thin">
+                        Примечание</td>
+                </tr>
+            </table>
+
+        </div>
     </div>
 </body>
+
 </html>
